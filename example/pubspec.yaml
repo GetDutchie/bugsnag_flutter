@@ -1,0 +1,21 @@
+name: bugsnag_flutter_example
+description: Demonstrates how to use the bugsnag_flutter_example plugin.
+
+publish_to: 'none'
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  bugsnag_flutter:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
