@@ -24,8 +24,9 @@ class BugsnagCrashReport {
       try {
         final lineExists = line?.isNotEmpty ?? false;
         final lineIsNotNestedAsyncStackTrace = line != '<asynchronous suspension>';
-        if (lineExists && lineIsNotNestedAsyncStackTrace)
+        if (lineExists && lineIsNotNestedAsyncStackTrace) {
           acc.add(BugsnagStackframe.fromString(line));
+        }
       } catch (e) {
         print('Failed to parse frame: "$line"');
       }

@@ -1,6 +1,6 @@
 # Bugsnag Flutter
 
-Native bindings to the Bugsnag SDK. **Android is still experimental**.
+Unofficial native bindings to the Bugsnag SDK. **Android is still experimental**.
 
 ## Setup
 

@@ -43,6 +43,8 @@ Tried calling: access occurred in Instance of 'PinInBloc'.
 class MockError extends Object {
   final String string;
   MockError(this.string);
+
+  @override
   String toString() => string;
 }
 

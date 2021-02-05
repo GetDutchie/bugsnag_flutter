@@ -15,8 +15,7 @@ enum BugsnagBreadcrumb {
 }
 
 class Bugsnag {
-  static const MethodChannel _channel =
-      const MethodChannel('plugins.greenbits.com/bugsnag_flutter');
+  static const MethodChannel _channel = MethodChannel('plugins.greenbits.com/bugsnag_flutter');
 
   static final Bugsnag instance = Bugsnag._();
 

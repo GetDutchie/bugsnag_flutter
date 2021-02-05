@@ -18,7 +18,7 @@ class BugsnagObserver extends RouteObserver<PageRoute<dynamic>> {
   void _sendScreenView(PageRoute<dynamic> route, {String action = 'On'}) {
     final screenName = route?.settings?.name;
     if (screenName != null) {
-      Bugsnag.instance.leaveBreadcrumb("$action $screenName", type: BugsnagBreadcrumb.navigation);
+      Bugsnag.instance.leaveBreadcrumb('$action $screenName', type: BugsnagBreadcrumb.navigation);
     }
   }
 
