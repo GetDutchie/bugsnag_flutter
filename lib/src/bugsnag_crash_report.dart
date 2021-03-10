@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:meta/meta.dart';
 import 'package:bugsnag_flutter/src/bugsnag_stackframe.dart';
 
 /// A report for an instance of an [error] with a [rawStackTrace]. This class
@@ -15,6 +14,10 @@ class BugsnagCrashReport {
   /// The [String] representation of the [error].
   String get message => error.toString();
 
+  /// The name of the developed package, used to determine `inProject` when
+  /// parsing stack frames.
+  final String? projectPackageName;
+
   /// The raw stack trace for where the exception occurred.
   final String rawStackTrace;
 
@@ -22,10 +25,9 @@ class BugsnagCrashReport {
   List<BugsnagStackframe> get stackTrace {
     return rawStackTrace.split('\n').fold<List<BugsnagStackframe>>([], (acc, line) {
       try {
-        final lineExists = line?.isNotEmpty ?? false;
         final lineIsNotNestedAsyncStackTrace = line != '<asynchronous suspension>';
-        if (lineExists && lineIsNotNestedAsyncStackTrace) {
-          acc.add(BugsnagStackframe.fromString(line));
+        if (line.isNotEmpty && lineIsNotNestedAsyncStackTrace) {
+          acc.add(BugsnagStackframe.fromString(line, projectPackageName: projectPackageName));
         }
       } catch (e) {
         print('Failed to parse frame: "$line"');
@@ -39,26 +41,25 @@ class BugsnagCrashReport {
       stackTrace.map((s) => s.toJson()).cast<Map<String, dynamic>>().toList();
 
   BugsnagCrashReport({
-    @required this.error,
-    @required this.rawStackTrace,
+    required this.error,
+    required this.rawStackTrace,
+    this.projectPackageName,
   });
 
   /// Some errors include a more relevant stack trace within their `.toString()`
   /// output versus the stack frame that comes from a `runZoned` error response.
   /// This constructor plucks that embedded stack trace
-  factory BugsnagCrashReport.fromEmbeddedStackTrace(Object error) {
+  static BugsnagCrashReport? fromEmbeddedStackTrace(Object error, {String? projectPackageName}) {
     final splitException = error.toString().split('\n');
-    final stackStartingLine =
-        splitException.firstWhere((e) => e.startsWith('#0'), orElse: () => null);
-    if (stackStartingLine == null) {
-      return null;
-    }
+    final stackStartingLine = _firstWhereOrNull<String>(splitException, (e) => e.startsWith('#0'));
+    if (stackStartingLine == null) return null;
 
     final stackWithoutDescription =
         splitException.sublist(splitException.indexOf(stackStartingLine));
 
     return BugsnagCrashReport(
       error: error,
+      projectPackageName: projectPackageName,
       rawStackTrace: stackWithoutDescription.join('\n'),
     );
   }
@@ -70,4 +71,12 @@ class BugsnagCrashReport {
         'stacktrace': stackTrace.map((f) => f.toJson()).toList(),
         'type': Platform.isIOS ? 'cocoa' : 'android',
       };
+}
+
+// borrowed from https://pub.dev/documentation/collection/latest/collection/IterableExtension/firstWhereOrNull.html
+T? _firstWhereOrNull<T>(Iterable<T> items, bool Function(T element) test) {
+  for (var element in items) {
+    if (test(element)) return element;
+  }
+  return null;
 }

@@ -2,7 +2,7 @@ import 'package:bugsnag_flutter/src/bugsnag_crash_report.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 const stackTrace = '''
-#0      main (package:herer/main_development.dart:7:5)
+#0      main (package:mypackage/main_development.dart:7:5)
 <asynchronous suspension>
 #1      _runMainZoned.<anonymous closure>.<anonymous closure> (dart:ui/hooks.dart:189:25)
 #2      _rootRun (dart:async/zone.dart:1124:13)
@@ -18,7 +18,7 @@ const errorOutput = '''Unhandled error NoSuchMethodError: The getter 'access' wa
 Receiver: null
 Tried calling: access occurred in Instance of 'PinInBloc'.
 #0      Object.noSuchMethod (dart:core-patch/object_patch.dart:51:5)
-#1      PinInBloc.mapEventToState (package:herer/app/blocs/pin_in_bloc/pin_in_bloc.dart:24:9)
+#1      PinInBloc.mapEventToState (package:mypackage/app/blocs/pin_in_bloc/pin_in_bloc.dart:24:9)
 <asynchronous suspension>
 #2      Bloc._bindEventsToStates.<anonymous closure> (package:bloc/src/bloc.dart:231:20)
 #3      Stream.asyncExpand.<anonymous closure>.<anonymous closure> (dart:async/stream.dart:644:30)
@@ -68,7 +68,7 @@ void main() {
 
     test('.fromEmbeddedStackTrace', () {
       final error = MockError(errorOutput);
-      final report = BugsnagCrashReport.fromEmbeddedStackTrace(error);
+      final report = BugsnagCrashReport.fromEmbeddedStackTrace(error)!;
       expect(report.error, error);
       expect(report.stackTrace.first.lineNumber, 51);
       expect(report.stackTrace.last.method, '_startMicrotaskLoop');

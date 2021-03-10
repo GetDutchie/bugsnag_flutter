@@ -23,14 +23,15 @@ void main() {
 
     group('.fromString', () {
       test('with column', () {
-        final rawString = '#0      main (package:herer/lib/app/main_development.dart:7:5)';
-        final stackframe = BugsnagStackframe.fromString(rawString);
+        final rawString = '#0      main (package:mypackage/lib/app/main_development.dart:7:5)';
+        final stackframe = BugsnagStackframe.fromString(rawString, projectPackageName: 'mypackage');
         expect(stackframe.rawString, rawString);
-        expect(stackframe.file, 'package:herer/lib/app/main_development.dart');
+        expect(stackframe.file, 'package:mypackage/lib/app/main_development.dart');
         expect(stackframe.lineNumber, 7);
         expect(stackframe.columnNumber, 5);
-        expect(stackframe.package, 'herer');
+        expect(stackframe.package, 'mypackage');
         expect(stackframe.method, 'main');
+        expect(stackframe.inProject, true);
       });
 
       test('without column', () {
@@ -42,6 +43,7 @@ void main() {
         expect(stackframe.package, 'async');
         expect(stackframe.columnNumber, 0);
         expect(stackframe.method, '_CustomZone.runUnary');
+        expect(stackframe.inProject, false);
       });
 
       test('without line or column', () {
@@ -52,6 +54,7 @@ void main() {
         expect(stackframe.columnNumber, 0);
         expect(stackframe.lineNumber, 0);
         expect(stackframe.method, 'MethodChannel._invokeMethod');
+        expect(stackframe.inProject, false);
       });
     });
 
@@ -61,12 +64,12 @@ void main() {
     });
 
     test('#toJson returns a map', () {
-      final rawString = '#0      main (package:herer/lib/app/main_development.dart:7:5)';
-      final stackframe = BugsnagStackframe.fromString(rawString);
+      final rawString = '#0      main (package:mypackage/lib/app/main_development.dart:7:5)';
+      final stackframe = BugsnagStackframe.fromString(rawString, projectPackageName: 'mypackage');
       expect(stackframe.toJson(), {
-        'className': 'herer',
+        'className': 'mypackage',
         'columnNumber': 5,
-        'file': 'package/herer/lib/app/main_development.dart',
+        'file': 'package/mypackage/lib/app/main_development.dart',
         'lineNumber': 7,
         'method': 'main',
         'inProject': true,

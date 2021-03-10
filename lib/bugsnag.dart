@@ -15,6 +15,9 @@ enum BugsnagBreadcrumb {
 }
 
 class Bugsnag {
+  @protected
+  String? projectPackageName;
+
   static const MethodChannel _channel = MethodChannel('plugins.greenbits.com/bugsnag_flutter');
 
   static final Bugsnag instance = Bugsnag._();
@@ -24,20 +27,23 @@ class Bugsnag {
   /// Provision the client. This method must be called before any subsequent methods.
   /// It's recommended that this method is `await`d in `void main()` before `runApp`.
   Future<void> configure({
-    String androidApiKey,
-    String iosApiKey,
+    String? androidApiKey,
+    String? iosApiKey,
     bool persistUser = true,
-    String releaseStage,
-  }) =>
-      _channel.invokeMethod('configure', {
-        'androidApiKey': androidApiKey,
-        'iosApiKey': iosApiKey,
-        'persistUser': persistUser.toString(),
-        'releaseStage': releaseStage,
-      });
+    String? releaseStage,
+    String? projectPackageName,
+  }) {
+    instance.projectPackageName = projectPackageName;
+    return _channel.invokeMethod('configure', {
+      'androidApiKey': androidApiKey,
+      'iosApiKey': iosApiKey,
+      'persistUser': persistUser.toString(),
+      'releaseStage': releaseStage,
+    });
+  }
 
   /// Notify Bugsnag of a user behavior preceeding an error
-  Future<void> leaveBreadcrumb(String message, {BugsnagBreadcrumb type}) =>
+  Future<void> leaveBreadcrumb(String? message, {BugsnagBreadcrumb? type}) =>
       _channel.invokeMethod('leaveBreadcrumb', {
         'message': message ?? '',
         'type': type?.index ?? 0,
@@ -45,13 +51,13 @@ class Bugsnag {
 
   /// Log an error
   Future<void> notify({
-    String context,
-    String description,
-    String name,
-    @required List<Map<String, dynamic>> stackTrace,
+    String? context,
+    required String description,
+    String? name,
+    required List<Map<String, dynamic>> stackTrace,
     // Sometimes a stack trace differs from what was reported by [FlutterErrorDetails]
     // and it should still be captured
-    StackTrace additionalStackTrace,
+    StackTrace? additionalStackTrace,
   }) {
     var shortVersion = description;
     final splitDescription = description.split('\n');
@@ -61,7 +67,7 @@ class Bugsnag {
 
     return _channel.invokeMethod('notify', {
       'context': context ?? '',
-      'description': shortVersion ?? '',
+      'description': shortVersion,
       'fullOutput': description,
       'name': name ?? splitDescription.first,
       'stackTrace': stackTrace,
@@ -78,7 +84,7 @@ class Bugsnag {
     final report = BugsnagCrashReport.fromEmbeddedStackTrace(error);
     return notify(
       description: error.toString(),
-      stackTrace: report?.stackTraceAsJson,
+      stackTrace: report?.stackTraceAsJson ?? [{}],
       additionalStackTrace: stackTrace,
     );
   }
@@ -88,7 +94,7 @@ class Bugsnag {
     final report = BugsnagCrashReport(error: error, rawStackTrace: error.stack.toString());
 
     return notify(
-      context: error.context.toDescription(),
+      context: error.context?.toDescription(),
       description: error.exceptionAsString(),
       stackTrace: report.stackTraceAsJson,
       additionalStackTrace: error.stack,
@@ -96,8 +102,9 @@ class Bugsnag {
   }
 
   /// Attach user information to subsequent reports to Bugsnag
-  Future<void> setUser(String id, {String email, String name}) => _channel.invokeMethod('setUser', {
-        'id': id ?? '',
+  Future<void> setUser(String id, {String? email, String? name}) =>
+      _channel.invokeMethod('setUser', {
+        'id': id,
         'email': email ?? '',
         'name': name ?? '',
       });

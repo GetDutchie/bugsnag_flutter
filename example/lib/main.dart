@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: FlatButton(
+          child: TextButton(
             child: Text('Running on'),
             onPressed: () {
               Bugsnag.instance.leaveBreadcrumb('Button Tapped', type: BugsnagBreadcrumb.user);

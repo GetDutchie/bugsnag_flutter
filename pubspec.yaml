@@ -1,11 +1,11 @@
 name: bugsnag_flutter
 description: Unofficial native bindings to the Bugsnag SDK. **Android support is still experimental**.
-version: 0.0.1+1
+version: 1.0.0-nullsafety.0
 homepage: https://github.com/greenbits/bugsnag_flutter
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.20.0"
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=2.0.0 < 3.0.0"
 
 dependencies:
   meta: '>= 1.0.0 <2.0.0'
