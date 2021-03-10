@@ -15,6 +15,8 @@ enum BugsnagBreadcrumb {
 }
 
 class Bugsnag {
+  /// For use with Bugsnag's `inProject` feature, this should be the name of the package where
+  /// bugsnag_flutter is directly imported. For example, `my_app`.
   @protected
   String? projectPackageName;
 
@@ -26,6 +28,9 @@ class Bugsnag {
 
   /// Provision the client. This method must be called before any subsequent methods.
   /// It's recommended that this method is `await`d in `void main()` before `runApp`.
+  ///
+  /// [projectPackageName] should reflect the name of the package where `bugsnag_flutter`
+  /// is imported.
   Future<void> configure({
     String? androidApiKey,
     String? iosApiKey,
