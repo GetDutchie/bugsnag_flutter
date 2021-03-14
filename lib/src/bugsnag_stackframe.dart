@@ -36,7 +36,10 @@ class BugsnagStackframe {
   }) : inProject = inProject ?? false;
 
   /// Parses the [rawString] into a [BugsnagStackframe].
-  factory BugsnagStackframe.fromString(String rawString, {String? projectPackageName}) {
+  factory BugsnagStackframe.fromString(
+    String rawString, {
+    String? projectPackageName,
+  }) {
     final match = matchStackInfo.firstMatch(rawString);
 
     if (match == null) {
@@ -49,7 +52,9 @@ class BugsnagStackframe {
     return BugsnagStackframe(
       columnNumber: int.tryParse(match.group(4) ?? '0')!,
       file: file,
-      inProject: projectPackageName == null ? false : file?.contains(projectPackageName),
+      inProject: projectPackageName == null
+          ? false
+          : file?.contains(projectPackageName),
       lineNumber: int.tryParse(match.group(3) ?? '0')!,
       method: match.group(1),
       package: package,
@@ -73,6 +78,6 @@ class BugsnagStackframe {
   /// Example: `#1      _rootRun (dart:async/zone.dart:1184:13)`
   ///
   /// Also account for `#12     _startIsolate.<anonymous closure> (dart:isolate-patch/isolate_patch.dart:301:19)`
-  static final matchStackInfo =
-      RegExp(r'#\d+\s+([\S\.]+)(?:.<[\w\s]+>)*\s+\((\w+:[^:]+):?(\d+)?:?(\d+)?\)\s*$');
+  static final matchStackInfo = RegExp(
+      r'#\d+\s+([\S\.]+)(?:.<[\w\s]+>)*\s+\((\w+:[^:]+):?(\d+)?:?(\d+)?\)\s*$');
 }

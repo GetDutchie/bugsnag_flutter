@@ -32,7 +32,8 @@ class MyApp extends StatelessWidget {
           child: TextButton(
             child: Text('Running on'),
             onPressed: () {
-              Bugsnag.instance.leaveBreadcrumb('Button Tapped', type: BugsnagBreadcrumb.user);
+              Bugsnag.instance.leaveBreadcrumb('Button Tapped',
+                  type: BugsnagBreadcrumb.user);
             },
           ),
         ),

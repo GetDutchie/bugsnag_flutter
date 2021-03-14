@@ -23,10 +23,13 @@ void main() {
 
     group('.fromString', () {
       test('with column', () {
-        final rawString = '#0      main (package:mypackage/lib/app/main_development.dart:7:5)';
-        final stackframe = BugsnagStackframe.fromString(rawString, projectPackageName: 'mypackage');
+        final rawString =
+            '#0      main (package:mypackage/lib/app/main_development.dart:7:5)';
+        final stackframe = BugsnagStackframe.fromString(rawString,
+            projectPackageName: 'mypackage');
         expect(stackframe.rawString, rawString);
-        expect(stackframe.file, 'package:mypackage/lib/app/main_development.dart');
+        expect(
+            stackframe.file, 'package:mypackage/lib/app/main_development.dart');
         expect(stackframe.lineNumber, 7);
         expect(stackframe.columnNumber, 5);
         expect(stackframe.package, 'mypackage');
@@ -35,7 +38,8 @@ void main() {
       });
 
       test('without column', () {
-        final rawString = '#4      _CustomZone.runUnary (dart:async/zone.dart:1100)';
+        final rawString =
+            '#4      _CustomZone.runUnary (dart:async/zone.dart:1100)';
         final stackframe = BugsnagStackframe.fromString(rawString);
         expect(stackframe.rawString, rawString);
         expect(stackframe.file, 'dart:async/zone.dart');
@@ -58,14 +62,18 @@ void main() {
       });
     });
 
-    test('BugsnagStackframe.fromString() throws when stackframe cannot be parsed', () {
+    test(
+        'BugsnagStackframe.fromString() throws when stackframe cannot be parsed',
+        () {
       expect(() => BugsnagStackframe.fromString(''),
           throwsA(TypeMatcher<BugsnagStackframeParseError>()));
     });
 
     test('#toJson returns a map', () {
-      final rawString = '#0      main (package:mypackage/lib/app/main_development.dart:7:5)';
-      final stackframe = BugsnagStackframe.fromString(rawString, projectPackageName: 'mypackage');
+      final rawString =
+          '#0      main (package:mypackage/lib/app/main_development.dart:7:5)';
+      final stackframe = BugsnagStackframe.fromString(rawString,
+          projectPackageName: 'mypackage');
       expect(stackframe.toJson(), {
         'className': 'mypackage',
         'columnNumber': 5,

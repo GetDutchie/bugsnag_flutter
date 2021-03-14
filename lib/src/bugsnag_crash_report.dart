@@ -23,11 +23,14 @@ class BugsnagCrashReport {
 
   /// Converts the [rawStackTrace] to a list of [BugsnagStackframe]s.
   List<BugsnagStackframe> get stackTrace {
-    return rawStackTrace.split('\n').fold<List<BugsnagStackframe>>([], (acc, line) {
+    return rawStackTrace.split('\n').fold<List<BugsnagStackframe>>([],
+        (acc, line) {
       try {
-        final lineIsNotNestedAsyncStackTrace = line != '<asynchronous suspension>';
+        final lineIsNotNestedAsyncStackTrace =
+            line != '<asynchronous suspension>';
         if (line.isNotEmpty && lineIsNotNestedAsyncStackTrace) {
-          acc.add(BugsnagStackframe.fromString(line, projectPackageName: projectPackageName));
+          acc.add(BugsnagStackframe.fromString(line,
+              projectPackageName: projectPackageName));
         }
       } catch (e) {
         print('Failed to parse frame: "$line"');
@@ -49,9 +52,13 @@ class BugsnagCrashReport {
   /// Some errors include a more relevant stack trace within their `.toString()`
   /// output versus the stack frame that comes from a `runZoned` error response.
   /// This constructor plucks that embedded stack trace
-  static BugsnagCrashReport? fromEmbeddedStackTrace(Object error, {String? projectPackageName}) {
+  static BugsnagCrashReport? fromEmbeddedStackTrace(
+    Object error, {
+    String? projectPackageName,
+  }) {
     final splitException = error.toString().split('\n');
-    final stackStartingLine = _firstWhereOrNull<String>(splitException, (e) => e.startsWith('#0'));
+    final stackStartingLine =
+        _firstWhereOrNull<String>(splitException, (e) => e.startsWith('#0'));
     if (stackStartingLine == null) return null;
 
     final stackWithoutDescription =

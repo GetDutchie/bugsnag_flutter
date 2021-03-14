@@ -14,7 +14,8 @@ const stackTrace = '''
 #8      _RawReceivePortImpl._handleMessage (dart:isolate/runtime/libisolate_patch.dart:171:12)
 ''';
 
-const errorOutput = '''Unhandled error NoSuchMethodError: The getter 'access' was called on null.
+const errorOutput =
+    '''Unhandled error NoSuchMethodError: The getter 'access' was called on null.
 Receiver: null
 Tried calling: access occurred in Instance of 'PinInBloc'.
 #0      Object.noSuchMethod (dart:core-patch/object_patch.dart:51:5)
@@ -53,14 +54,16 @@ void main() {
     group('default constructor', () {
       test('with an error', () {
         final error = Error();
-        final report = BugsnagCrashReport(error: error, rawStackTrace: stackTrace);
+        final report =
+            BugsnagCrashReport(error: error, rawStackTrace: stackTrace);
         expect(report.error, error);
         expect(report.rawStackTrace, stackTrace);
       });
 
       test('with an exception', () {
         final exception = Exception();
-        final report = BugsnagCrashReport(error: exception, rawStackTrace: stackTrace);
+        final report =
+            BugsnagCrashReport(error: exception, rawStackTrace: stackTrace);
         expect(report.error, exception);
         expect(report.rawStackTrace, stackTrace);
       });
@@ -77,20 +80,23 @@ void main() {
     group('#errorClass', () {
       test('with an error', () {
         final error = AssertionError('a message');
-        final report = BugsnagCrashReport(error: error, rawStackTrace: stackTrace);
+        final report =
+            BugsnagCrashReport(error: error, rawStackTrace: stackTrace);
         expect(report.errorClass, 'AssertionError');
       });
 
       test('with an exception', () {
         final exception = IntegerDivisionByZeroException();
-        final report = BugsnagCrashReport(error: exception, rawStackTrace: stackTrace);
+        final report =
+            BugsnagCrashReport(error: exception, rawStackTrace: stackTrace);
         expect(report.errorClass, 'IntegerDivisionByZeroException');
       });
     });
 
     test('#message', () {
       final assertionError = AssertionError('a message');
-      var report = BugsnagCrashReport(error: assertionError, rawStackTrace: stackTrace);
+      var report =
+          BugsnagCrashReport(error: assertionError, rawStackTrace: stackTrace);
       expect(report.message, 'Assertion failed: "a message"');
 
       final error = Error();
@@ -100,7 +106,8 @@ void main() {
 
     test('#stackTrace', () {
       final error = ArgumentError('a message');
-      final report = BugsnagCrashReport(error: error, rawStackTrace: stackTrace);
+      final report =
+          BugsnagCrashReport(error: error, rawStackTrace: stackTrace);
       expect(report.stackTrace.length, 9);
 
       final frame = report.stackTrace.last;
@@ -112,7 +119,8 @@ void main() {
 
     test('#toJson', () {
       final error = ArgumentError('a message');
-      final report = BugsnagCrashReport(error: error, rawStackTrace: stackTrace);
+      final report =
+          BugsnagCrashReport(error: error, rawStackTrace: stackTrace);
       final jsonMap = report.toJson();
 
       expect(jsonMap['errorClass'], 'ArgumentError');
@@ -120,7 +128,7 @@ void main() {
 
       final frame = jsonMap['stacktrace'].last;
       expect(frame['method'], '_RawReceivePortImpl._handleMessage');
-      expect(frame['file'], 'isolate/runtime/libisolate_patch.dart');
+      expect(frame['file'], 'dart/isolate/runtime/libisolate_patch.dart');
       expect(frame['lineNumber'], 171);
       expect(frame['columnNumber'], 12);
     });

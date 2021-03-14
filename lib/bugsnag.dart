@@ -20,7 +20,8 @@ class Bugsnag {
   @protected
   String? projectPackageName;
 
-  static const MethodChannel _channel = MethodChannel('plugins.greenbits.com/bugsnag_flutter');
+  static const MethodChannel _channel =
+      MethodChannel('plugins.greenbits.com/bugsnag_flutter');
 
   static final Bugsnag instance = Bugsnag._();
 
@@ -76,7 +77,8 @@ class Bugsnag {
       'fullOutput': description,
       'name': name ?? splitDescription.first,
       'stackTrace': stackTrace,
-      if (additionalStackTrace != null) 'additionalStackTrace': additionalStackTrace.toString(),
+      if (additionalStackTrace != null)
+        'additionalStackTrace': additionalStackTrace.toString(),
     });
   }
 
@@ -96,7 +98,10 @@ class Bugsnag {
 
   /// Convenience method for [notify]
   Future<void> recordFlutterError(FlutterErrorDetails error) {
-    final report = BugsnagCrashReport(error: error, rawStackTrace: error.stack.toString());
+    final report = BugsnagCrashReport(
+      error: error,
+      rawStackTrace: error.stack.toString(),
+    );
 
     return notify(
       context: error.context?.toDescription(),
