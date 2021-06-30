@@ -5,10 +5,10 @@ homepage: https://github.com/greenbits/bugsnag_flutter
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=2.0.0 < 3.0.0"
+  flutter: ">=2.0.0 <3.0.0"
 
 dependencies:
-  meta: ">= 1.0.0 <2.0.0"
+  meta: ">=1.0.0 <2.0.0"
   flutter:
     sdk: flutter
 
