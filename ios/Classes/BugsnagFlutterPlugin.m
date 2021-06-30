@@ -59,20 +59,25 @@
       return;
     }
 
-    NSException *exception = [NSException exceptionWithName:call.arguments[@"name"]
-                                                     reason:call.arguments[@"description"] userInfo:nil];
-    [Bugsnag notify:exception block:^BOOL(BugsnagEvent *event) {
-      [event attachCustomStacktrace:call.arguments[@"stackTrace"]
-                           withType:@"flutter"];
-      [event addMetadata:@{@"Full Error": call.arguments[@"fullOutput"]} toSection:@"Flutter"];
-      [event addMetadata:@{@"Context": call.arguments[@"context"]} toSection:@"Flutter"];
-      if (call.arguments[@"additionalStackTrace"]) {
-        [event addMetadata:@{@"StackTrace": call.arguments[@"additionalStackTrace"]} toSection:@"Flutter"];
-      }
+    id stacktrace = call.arguments[@"stackTrace"];
+    if ([stacktrace isKindOfClass:[NSArray class]]) {
+      NSException *exception = [NSException exceptionWithName:call.arguments[@"name"]
+                                                       reason:call.arguments[@"description"] userInfo:nil];
+      [Bugsnag notify:exception block:^BOOL(BugsnagEvent *event) {
+        [event attachCustomStacktrace:call.arguments[@"stackTrace"]
+                             withType:@"flutter"];
+        [event addMetadata:@{@"Full Error": call.arguments[@"fullOutput"]} toSection:@"Flutter"];
+        [event addMetadata:@{@"Context": call.arguments[@"context"]} toSection:@"Flutter"];
+        if (call.arguments[@"additionalStackTrace"]) {
+          [event addMetadata:@{@"StackTrace": call.arguments[@"additionalStackTrace"]} toSection:@"Flutter"];
+        }
 
-      return YES;
-    }];
-    result(@(YES));
+        return YES;
+      }];
+      result(@(YES));
+    } else {
+      result(@(NO));
+    }
 
   } else if ([@"setUser" isEqualToString:call.method]) {
     if (!self.configured) {
