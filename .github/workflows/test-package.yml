@@ -15,13 +15,13 @@ jobs:
   # against Dart dev.
   analyze_and_test:
     runs-on: ubuntu-latest
-    container:
-      image: cirrusci/flutter:${{ matrix.flutter_version }}
     strategy:
       fail-fast: false
       matrix:
         flutter_version: [dev]
     steps:
+      - name: Install Flutter
+        uses: subosito/flutter-action@v1.4.0
       - id: install
         name: Install dependencies
         run: flutter pub get
