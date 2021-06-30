@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        flutter_version: [dev]
+        flutter_version: [dev, stable]
     steps:
       - uses: actions/checkout@v2
       - id: install
