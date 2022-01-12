@@ -1,5 +1,9 @@
 ## Unreleased
 
+## 1.0.1
+
+* Use `mavenCentral` instead of `jcenter` for Android dependencies
+
 ## 1.0.0
 
 * Support sound null safety
