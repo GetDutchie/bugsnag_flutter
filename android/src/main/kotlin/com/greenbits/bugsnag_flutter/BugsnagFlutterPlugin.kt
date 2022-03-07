@@ -75,7 +75,7 @@ class BugsnagFlutterPlugin: FlutterPlugin, MethodCallHandler {
             for (frame in event.errors[0].stacktrace) {
               val index = event.errors[0].stacktrace.indexOf(frame)
 
-              if (stackSizeIndexed >= index) {
+              if (stackTrace.size - 1 >= index) {
                 val flutterFrame = stackTrace[index]
                 frame.file = flutterFrame["file"] as? String
                 frame.inProject = flutterFrame["inProject"] as? Boolean
