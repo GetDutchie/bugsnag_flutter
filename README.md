@@ -1,3 +1,7 @@
+# Use the Official Bugsnag Flutter SDK
+
+This repo has been deprecated in favor of [the official Bugsnag Flutter SDK](https://pub.dev/packages/bugsnag_flutter) (same package name). Please see [the announcement](https://github.com/GetDutchie/bugsnag_flutter/issues/4) or skip ahead to the [new, official repo](https://github.com/bugsnag/bugsnag-flutter).
+
 # Bugsnag Flutter
 
 Unofficial native bindings to the Bugsnag SDK. **Android is still experimental**.
